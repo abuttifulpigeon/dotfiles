@@ -1,0 +1,156 @@
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+    neofetch
+    mullvad status
+end
+### VARIABLES ###
+set PATH /usr/bin $PATH
+set -Ux VISUAL /usr/bin/vim
+set -Ux EDITOR /usr/bin/vim
+
+### FUNCTIONS ###
+
+
+
+### ALIASES ###
+
+# Navigation
+alias ..="cd .."
+alias ...="cd ../.."
+alias .3="cd ../../.."
+alias .4="cd ../../../.."
+alias .5="cd ../../../../.."
+
+# Vim
+alias v="vim"
+
+# Pacman and yay/git
+function pacsyu
+    sudo pacman -Syyu $argv
+end
+
+function yaysua
+    yay -Sua --noconfirm $argv
+end
+
+function yaysyu
+    yay -Syu --noconfirm $argv
+end
+
+function cleanup
+    sudo pacman -Rns (pacman -Qtdq) $argv
+end
+
+
+# Change ls to exac
+function ls
+    exa -al --color=always --group-directories-first $argv
+end
+
+function la
+    exa -a --color=always --group-directories-first $argv
+end
+
+function ll
+    exa -l --color=always --group-directories-first $argv
+end
+
+function lt
+    exa -aT --color=always --group-directories-first $argv
+end
+
+function l.
+    exa -a | egrep "^\." $argv
+end
+
+# Colorize grep
+function grep
+	grep --color=auto $argv
+end
+
+function egrep
+	egrep --color=auto $argv
+end
+
+function fgrep
+	fgrep --color=auto $argv
+end
+
+# Adding flags
+function cp
+	cp -i $argv
+end
+
+function cr
+	cp -ir $argv
+end
+
+function df
+	df -h $argv
+end
+
+# Get top hardware hoggers
+function psmem
+	ps auxf | sort -nr -k 4 $argv
+end
+
+function psmem10
+	ps auxf | sort -nr -k 4 | head -10 $argv
+end
+
+function pscpu
+	ps auxf | sort -nr -k 3 $argv
+end
+
+function pscpu10
+	ps auxf | sort -nr -k 3 | head -10 $argv
+end
+
+# Git
+function gc
+    cd ~/builds && git clone $argv
+end
+
+# YT-DLP
+function yta-aac
+	yt-dlp --extract-audio --audio-format aac $argv
+end
+
+function yta-best
+	yt-dlp --extract-audio --audio-format best $argv
+end
+
+function yta-m4a
+	yt-dlp --extract-audio --audio-format m4a $argv
+end
+
+function yta-mp3
+	yt-dlp --extract-audio --audio-format mp3 $argv
+end
+
+function yta-wav
+	yt-dlp --extract-audio --audio-format wav $argv 
+end
+
+function ytv-best
+	yt-dlp -f bestvideo+bestaudio $argv
+end
+
+function ytv-mp4
+	yt-dlp -f hls-720p --format mp4 $argv
+end
+
+# Other
+function spongebob
+	curl -s https://raw.githubusercontent.com/nmdra/spongebob.sh/main/spongebob.sh -o spongebob.sh && bash spongebob.sh $argv
+end
+
+function rr
+	curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash
+end
+
+
+#neofetch
+
+# Created by `pipx` on 2023-03-04 16:15:05
+set PATH $PATH /home/jonah/.local/bin

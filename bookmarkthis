@@ -1,3 +1,11 @@
+: '
+This script is currently set up to work with i3wm. If you want it to work out-of-the-box without modification, create a directory called `.scripts` in your home folder and place it in there.
+
+If you do want to place this file somewhere else, go to line 247 in the i3 config file and change the directory to the directory in which you placed the file (ex. if placed in your Documents folder, you would change it to be `$HOME/Documents/bookmarkthis`).
+
+'
+
+
 #!/bin/sh
 
 bookmark="$(xclip -o)"

@@ -98,7 +98,7 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+v split v
 
 # split in horizontal orientation
-bindsym $mod+t split h 
+bindsym $mod+b split h 
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -241,6 +241,10 @@ bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(d
 bindsym Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
 bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
 bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
+
+# Bookmarks [Experimental]
+bindsym $mod+Insert exec xdotool type $(grep -v '^#' ~/.local/share/bookmarks/snippets | dmenu -i -l 50 | cut'' -f1)
+bindsym $mod+Shift+b exec $HOME/.scripts/bookmarkthis
 
 # Specific Window Settings
 for_window [class="Onboard"] floating enable

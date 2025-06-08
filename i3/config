@@ -9,11 +9,6 @@
 # layout, use the i3-config-wizard
 #
 
-set $monitor1 DP-3
-set $monitor2 DP-0
-
-exec --no-startup-id xrandr --output DP-3 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-0 --mode 1366x768 --pos 1920x0 --rotate normal
-
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:monospace 8
@@ -46,12 +41,17 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 
 set $mod Mod4
 
+# Alternative volume controls (Mod+Up/Down for volume)
+bindsym $mod+9 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym $mod+8 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym $mod+0 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
-set $up o
-set $down i
-set $left u
-set $right p
+set $up k
+set $down j
+set $left h
+set $right l
 
 # use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -71,16 +71,16 @@ bindsym $mod+d exec --no-startup-id dmenu_run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+$left  focus left
-bindsym $mod+$down  focus down
-bindsym $mod+$up    focus up
-bindsym $mod+$right focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+$left move left
@@ -94,11 +94,8 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-# split in verticle orientation
-bindsym $mod+v split v
-
-# split in horizontal orientation
-bindsym $mod+b split h 
+# toggle split orientation (horizontal/vertical)
+bindsym $mod+v split toggle
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -164,24 +161,20 @@ bindsym $mod+Shift+F8 move container to workspace number $ws8
 bindsym $mod+Shift+F9 move container to workspace number $ws9
 bindsym $mod+Shift+F10 move container to workspace number $ws10
 
-# Move workspace between monitors
-bindsym $mod+Shift+greater move workspace to output right
-bindsym $mod+Shift+less move workspace to output left
-
-# Keep mouse cursor in the same position when switching workspaces
-mouse_warping none
-
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+# shutdown
+bindsym $mod+Ctrl+Shift+e exec "i3-nagbar -t warning -m 'You pressed the shutdown shortcut. Do you really want to shutdown? This will shutdown your PC.' -B 'Yes, exit i3' 'exec shutdown now'"
+
 bindsym $mod+Shift+w exec librewolf
 # window shit
 default_border pixel 5
-gaps inner 7
-gaps outer 3
+gaps inner 5
+gaps outer 5
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -191,10 +184,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym h           resize shrink width 10 px or 10 ppt
-        bindsym k           resize grow height 10 px or 10 ppt
-        bindsym j           resize shrink height 10 px or 10 ppt
-        bindsym l           resize grow width 10 px or 10 ppt
+        bindsym $left       resize shrink width 10 px or 10 ppt
+        bindsym $up         resize grow height 10 px or 10 ppt
+        bindsym $down       resize shrink height 10 px or 10 ppt
+        bindsym $right      resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left        resize shrink width 10 px or 10 ppt
@@ -238,13 +231,9 @@ bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow)
 bindsym Shift+Print exec --no-startup-id maim --select "/home/$USER/Pictures/$(date)"
 
 ## Clipboard Screenshots
-bindsym Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
+bindsym Print exec --no-startup-id flameshot gui
 bindsym Ctrl+$mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
 bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
-
-# Bookmarks [Experimental]
-bindsym $mod+Insert exec xdotool type $(grep -v '^#' ~/.local/share/bookmarks/snippets | dmenu -i -l 50 | cut'' -f1)
-bindsym $mod+Shift+b exec $HOME/.scripts/bookmarkthis
 
 # Specific Window Settings
 for_window [class="Onboard"] floating enable
@@ -266,7 +255,9 @@ focus_follows_mouse no
 #######################################################################
 exec i3-config-wizard
 exec onboard
+exec --no-startup-id xfce4-clipman
+exec_always --no-startup-id xset r rate 300 50
+exec_always --no-startup-id picom
 exec_always feh --randomize --bg-fill ~/Pictures/wallpapers/*
 exec_always ~/.config/polybar/launch.sh
 exec_always ~/.config/polybar/scripts/vpn-mullvad.sh
-exec --no-startup-id picom -b

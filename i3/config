@@ -63,7 +63,10 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+d exec --no-startup-id rofi -show drun -normal-window -show-icons
+bindsym $mod+Shift+d exec --no-startup-id rofi -show window -normal-window -show-icons
+bindsym $mod+Shift+s exec --no-startup-id rofi -show emoji -normal-window
+
 # A more modern dmenu replacement is rofi:
 # bindsym $mod+d exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -172,7 +175,7 @@ bindsym $mod+Ctrl+Shift+e exec "i3-nagbar -t warning -m 'You pressed the shutdow
 
 bindsym $mod+Shift+w exec librewolf
 # window shit
-default_border pixel 5
+default_border pixel 3
 gaps inner 5
 gaps outer 5
 
@@ -237,6 +240,7 @@ bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection c
 
 # Specific Window Settings
 for_window [class="Onboard"] floating enable
+for_window [class="Rofi"] floating enable
 
 focus_follows_mouse no
 

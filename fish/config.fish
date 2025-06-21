@@ -7,6 +7,7 @@ end
 set PATH /usr/bin $PATH
 set -Ux VISUAL /usr/bin/vim
 set -x EDITOR /usr/bin/vim
+set -gx PATH /home/linuxbrew/.linuxbrew/bin $PATH
 
 set -x DEVKITPRO /opt/devkitpro
 set -x DEVKITPPC $DEVKITPRO/devkitPPC
@@ -32,7 +33,7 @@ alias v="vim"
 alias SS="sudo systemctl"
 
 # Pacman and yay/git
-alias a="sudo apt"
+alias p="paru --sudoloop"
 
 # Change ls to exac
 alias ls="exa -al --color=always --group-directories-first"
@@ -78,3 +79,13 @@ alias rr="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/mas
 
 # Created by `pipx` on 2023-03-04 16:15:05
 set PATH $PATH /home/jonah/.local/bin
+
+set -gx NVM_DIR ~/.nvm
+function nvm
+    bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
+end
+
+set -Ux ANDROID_HOME $HOME/Android/Sdk
+set -Ux PATH $ANDROID_HOME/cmdline-tools/tools/bin $ANDROID_HOME/platform-tools $ANDROID_HOME/build-tools/31.0.0 $PATH
+set -gx QT_QPA_PLATFORMTHEME qt5ct
+set -gx QT_STYLE_OVERRIDE gtk2
